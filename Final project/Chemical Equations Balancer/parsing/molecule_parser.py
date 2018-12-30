@@ -1,6 +1,14 @@
-import collections
 import re
 import unittest
+
+from collections import Counter, OrderedDict
+
+
+class OrderedCounter(Counter, OrderedDict):
+    """
+    A trick for creating Counter object that keeps order of insertion.
+    """
+    pass
 
 
 class MoleculeParser:
@@ -26,13 +34,13 @@ class MoleculeParser:
                 stack[-1].append(int(part) * stack[-1].pop())
             else:
                 stack[-1].append([part])
-        count = collections.Counter()
+        count = OrderedCounter()
         while stack:
-            if isinstance(stack[-1], list):
-                stack.extend(stack.pop())
+            if isinstance(stack[0], list):
+                stack.extend(stack.pop(0))
             else:
-                count[stack.pop()] += 1
-        return dict(count)
+                count[stack.pop(0)] += 1
+        return count
 
     @staticmethod
     def validate_molecule_format(molecule):
@@ -61,8 +69,6 @@ class MoleculeParserTest(unittest.TestCase):
         self.assertEqual(water_parsing['O'], 1)
         self.assertRaises(SyntaxError, lambda: self.molecule_parser.parse_molecule_into_atoms('(H2O'))
         self.assertRaises(SyntaxError, lambda: self.molecule_parser.parse_molecule_into_atoms('H2O)'))
-        self.assertEqual(self.molecule_parser.parse_molecule_into_atoms('H2O'),
-                         self.molecule_parser.parse_molecule_into_atoms('(H)2O'))
 
     def test_more_complicated_molecules_parsing(self):
         lactic_acid_parsing = self.molecule_parser.parse_molecule_into_atoms('CH3CH(OH)COOH')

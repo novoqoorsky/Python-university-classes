@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+from collections import OrderedDict
 
 from parsing.equation_parser import EquationParser
 from parsing.molecule_parser import MoleculeParser
@@ -23,7 +24,6 @@ class MatrixCreator:
                     H2  O2  H2O
         H           2   0   2
         O           0   2   1
-        nullity     0   0   1
 
         :param equation: the equation
         :return: the equation matrix
@@ -32,12 +32,7 @@ class MatrixCreator:
         left_side_molecules = self.equation_parser.parse_side_to_molecules(equation_sides[0])
         right_side_molecules = self.equation_parser.parse_side_to_molecules(equation_sides[1])
         atoms_dictionary = self.create_atoms_dictionary(left_side_molecules, right_side_molecules)
-        total_molecules = len(list(atoms_dictionary.values())[0])
-        nullity_vector = [0] * total_molecules
-        nullity_vector[total_molecules - 1] = 1
-        atoms_dictionary["nullity"] = nullity_vector
-        matrix = np.array(list(atoms_dictionary.values()))
-        return matrix
+        return np.array(list(atoms_dictionary.values()))
 
     def create_atoms_dictionary(self, left_side_molecules, right_side_molecules):
         """
@@ -48,7 +43,7 @@ class MatrixCreator:
         :param right_side_molecules: molecules in right side of the equation
         :return: the dictionary
         """
-        atoms_dictionary = {}
+        atoms_dictionary = OrderedDict()
         self.__parse_unique_atoms(atoms_dictionary, left_side_molecules)
         self.__add_side_molecules_atoms_to_dictionary(left_side_molecules, atoms_dictionary)
         self.__add_side_molecules_atoms_to_dictionary(right_side_molecules, atoms_dictionary)
@@ -91,14 +86,9 @@ class MatrixCreatorTest(unittest.TestCase):
 
     def test_complicated_matrix_creation(self):
         complicated_equation_matrix = self.matrix_creator.create_equation_matrix("KMnO4 + HCl -> Mn(Cl)2 + Cl2 + KCl + H2O")
-        first_molecule_atoms = []
-        for i in range(len(complicated_equation_matrix)):
-            first_molecule_atoms.append(complicated_equation_matrix[i][0])
-        self.assertTrue(np.array_equal(first_molecule_atoms, [4, 1, 1, 0, 0, 0]))
-        last_molecule_atoms = []
-        for i in range(len(complicated_equation_matrix)):
-            last_molecule_atoms.append(complicated_equation_matrix[i][len(complicated_equation_matrix[i]) - 1])
-        self.assertTrue(np.array_equiv(last_molecule_atoms, [1, 0, 0, 0, 2, 1]))
+        self.assertTrue(np.array_equal(complicated_equation_matrix[:, 0], [1, 1, 4, 0, 0]))
+        self.assertTrue(np.array_equiv(complicated_equation_matrix[:, len(complicated_equation_matrix[0]) - 1],
+                                       [0, 0, 1, 2, 0]))
 
 
 if __name__ == '__main__':
