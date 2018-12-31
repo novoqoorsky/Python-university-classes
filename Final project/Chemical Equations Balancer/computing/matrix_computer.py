@@ -20,9 +20,9 @@ class MatrixComputer:
         :raises: ValueError upon the equation being skeletal
         """
         if self.is_matrix_square(matrix):
-            matrix = self.handle_square_matrix_case(matrix)
+            matrix = self.__handle_square_matrix_case(matrix)
         else:
-            matrix = self.handle_standard_case(matrix)
+            matrix = self.__handle_standard_case(matrix)
         try:
             matrix_inverse = np.linalg.inv(matrix)
         except LinAlgError:
@@ -102,27 +102,29 @@ class MatrixComputer:
         return all(len(row) == rows for row in matrix)
 
     @staticmethod
-    def gaussian_elimination(A):
+    def gaussian_elimination(matrix):
         """
         Performs Gaussian elimination on the matrix to reduce
         it to row-echelon form.
 
-        :param A: the matrix
+        :param matrix: the matrix
         :return: the matrix reduced to row-echelon form
         """
-        n = len(A)
-        M = A
+        n = len(matrix)
+        matrix_copy = matrix
         for k in range(n):
             for i in range(k, n):
-                if abs(M[i][k]) > abs(M[k][k]):
-                    M[k], M[i] = M[i], M[k]
+                if abs(matrix_copy[i][k]) > abs(matrix_copy[k][k]):
+                    matrix_copy[k], matrix_copy[i] = matrix_copy[i], matrix_copy[k]
                 else:
                     pass
             for j in range(k + 1, n):
-                q = float(M[j][k]) / M[k][k]
+                q = 0
+                if matrix_copy[k][k] != 0:
+                    q = float(matrix_copy[j][k]) / matrix_copy[k][k]
                 for m in range(k, n):
-                    M[j][m] -= q * M[k][m]
-        return M
+                    matrix_copy[j][m] -= q * matrix_copy[k][m]
+        return matrix_copy
 
 
 class MatrixComputerTest(unittest.TestCase):
