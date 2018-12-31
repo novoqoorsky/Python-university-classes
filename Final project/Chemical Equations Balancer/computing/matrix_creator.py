@@ -56,7 +56,7 @@ class MatrixCreator:
                 if unique_atom in atoms_in_the_molecule:
                     atoms_dictionary[unique_atom].append(atoms_in_the_molecule[unique_atom])
                 else:
-                    atoms_dictionary[unique_atom].append(0)
+                    atoms_dictionary[unique_atom].append(0.0)
 
     def __parse_unique_atoms(self, atoms_dictionary, one_side_of_equation):
         for molecule in one_side_of_equation:
