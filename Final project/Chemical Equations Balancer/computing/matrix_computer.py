@@ -59,8 +59,8 @@ class MatrixComputer:
         Performs augmentation in standard case - when the equation
         matrix is not square to begin with.
 
-        :param matrix:
-        :return:
+        :param matrix: the equation matrix
+        :return: the modified matrix
         """
         total_molecules = len(matrix[0])
         nullity_vector = [0] * total_molecules

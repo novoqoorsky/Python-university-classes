@@ -2,7 +2,7 @@ from balancing.balancer import Balancer
 
 
 def main():
-    balancer = Balancer(logging=False)
+    balancer = Balancer(logging=True)
     print("Hello! Enter a chemical equation in below format and I'll try to balance it for you!")
     print("H2 + O2 -> H2O")
     print("\nIf you wish to end the program, just type: exit")

@@ -5,18 +5,29 @@ from parsing.equation_parser import EquationParser
 
 
 class Balancer:
+    """
+    A class for performing all of the balancing operations.
+    """
 
     def __init__(self, logging=True):
+        """
+        Sets up all the components.
+
+        :param logging: whether to print logs or not
+        """
         self.matrix_creator = MatrixCreator()
         self.matrix_computer = MatrixComputer()
         self.equation_parser = EquationParser()
-        self.logging = logging
-        if logging:
-            self.logger = Logger()
-        else:
-            self.logger = Logger(active=False)
+        self.logger = Logger(active=logging)
 
     def balance_equation(self, equation):
+        """
+        Computes the coefficients and prints the balanced equation.
+
+        :param equation: the equation to be balanced
+        :return: whether equation was successfully balanced or not
+        :raises ValueError if the equation could not be balanced
+        """
         left_side_molecules, right_side_molecules = self.__get_molecules(equation)
         self.logger.info("Parsing the equation...")
         equation_matrix = self.matrix_creator.create_equation_matrix(equation)

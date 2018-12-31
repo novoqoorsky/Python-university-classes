@@ -1,4 +1,8 @@
 class Logger:
+    """
+    A class for logging info and error messages.
+    Prints messages only if active=True.
+    """
 
     def __init__(self, active=True):
         self.active = active
