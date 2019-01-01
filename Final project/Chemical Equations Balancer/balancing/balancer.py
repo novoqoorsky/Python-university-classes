@@ -1,3 +1,6 @@
+import sys
+
+from computing.balancing_validator import BalancingValidator
 from computing.matrix_computer import MatrixComputer
 from computing.matrix_creator import MatrixCreator
 from chembal_logging.logger import Logger
@@ -18,6 +21,7 @@ class Balancer:
         self.matrix_creator = MatrixCreator()
         self.matrix_computer = MatrixComputer()
         self.equation_parser = EquationParser()
+        self.balancing_validator = BalancingValidator(logging=logging)
         self.logger = Logger(active=logging)
 
     def balance_equation(self, equation):
@@ -39,7 +43,8 @@ class Balancer:
             return False
         self.logger.info("Computed the coefficients:", args=equation_coefficients)
         self.__print_results(left_side_molecules, right_side_molecules, equation_coefficients)
-        return True
+        return self.balancing_validator.validate_balancing(
+            left_side_molecules, right_side_molecules, equation_coefficients)
 
     def __get_molecules(self, equation):
         try:
@@ -49,6 +54,7 @@ class Balancer:
             return left_side_molecules, right_side_molecules
         except SyntaxError as ex:
             self.logger.error("Equation parsing error: ", ex)
+            sys.exit(1)
 
     @staticmethod
     def __print_results(left_side_molecules, right_side_molecules, coefficients):
