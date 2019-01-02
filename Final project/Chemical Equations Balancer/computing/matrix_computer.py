@@ -30,8 +30,6 @@ class MatrixComputer:
         except LinAlgError:
             raise ValueError("Skeletal equation - cannot be balanced!")
         coefficients = matrix_inverse[:, len(matrix) - 1]
-        if np.any(abs(coefficients) < 1e-10):
-            raise ValueError("Skeletal equation - cannot be balanced!")
         return self.scale_the_coefficients(coefficients)
 
     def __handle_square_matrix_case(self, matrix):
