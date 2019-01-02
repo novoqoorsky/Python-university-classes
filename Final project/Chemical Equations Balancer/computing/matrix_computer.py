@@ -19,6 +19,8 @@ class MatrixComputer:
         :return: the coefficients
         :raises: ValueError upon the equation being skeletal
         """
+        if len(matrix) > len(matrix[0]):
+            matrix = np.delete(matrix, len(matrix) - 1, 0)
         if self.is_matrix_square(matrix):
             matrix = self.__handle_square_matrix_case(matrix)
         else:

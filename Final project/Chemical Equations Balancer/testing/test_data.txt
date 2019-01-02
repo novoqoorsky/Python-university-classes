@@ -25,4 +25,8 @@ N2 + H2 -> NH3;True
 CaCO3 -> CaO + CO2;True
 Sc2O3 + SO3 -> Sc2(SO4)3;True
 (NH4)2Cr2O7 -> Cr2O3 + N2 + H2O;True
-Cu + HNO3 -> Cu(NO3)2 + H2O + NO;False
+Cu + HNO3 -> Cu(NO3)2 + H2O + NO;True
+Cu + HNO3 -> Cu(NO3)2 + H2O + NO2;True
+Al + Mn3O4 -> Al2O3 + Mn;True
+KHC8H4O4 + KOH -> K2C8H4O4 + H2O;True
+K4Fe(CN)6 + KMnO4 + H2SO4 -> KHSO4 + Fe2(SO4)3 + MnSO4 + HNO3 + CO2 + H2O;True
